@@ -28,7 +28,5 @@ ALTER TABLE CourseOffers ADD PRIMARY KEY (CourseOfferId);
 ALTER TABLE StudentAssistants ADD PRIMARY KEY (CourseOfferId, StudentRegistrationId);
 ALTER TABLE CourseRegistrations ADD PRIMARY KEY (StudentRegistrationId, CourseOfferId);
 
-CREATE TABLE DegreeProgress AS(WITH Progress AS(select SRTD.StudentId, CR.StudentRegistrationId, SRTD.DegreeId, SUM(CAST(Grade AS DECIMAL) * ECTS)/SUM(ECTS) AS GPA, SUM(ECTS) AS AcqECTS from CourseRegistrations CR, CourseOffers CO, Courses C, StudentRegistrationsToDegrees SRTD WHERE CR.CourseOfferId = CO.CourseOfferId AND C.CourseId = CO.CourseId AND GRADE >= 5 AND SRTD.StudentRegistrationId = CR.StudentRegistrationId GROUP BY (SRTD.StudentId, CR.StudentRegistrationId, SRTD.DegreeId)) SELECT Progress.*, TotalEcts FROM Progress, Degrees D Where D.DegreeId = Progress.DegreeId);
-
 ANALYZE VERBOSE;
 
