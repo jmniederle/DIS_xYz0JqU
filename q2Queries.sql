@@ -3,6 +3,6 @@ WITH ExcellentStudentRegistrations AS (SELECT StudentRegistrationId FROM DegreeP
 SELECT 0;
 SELECT (count(DISTINCT S.StudentId) FILTER(WHERE Gender='F')/CAST(count(DISTINCT S.StudentId) AS DECIMAL)) AS percentage  FROM Degrees D, StudentRegistrationsToDegrees SRTD, Students S WHERE Dept = %1% AND D.DegreeId = SRTD.DegreeId AND S.StudentId = SRTD.StudentId;
 SELECT 0;
-SELECT 0;
+WITH BestGrades AS (SELECT DISTINCT ON(CR.CourseOfferId) CR.CourseOfferId, Grade FROM CourseRegistrations CR, CourseOffers CO WHERE CO.CourseOfferId = CR.CourseOfferId AND CO.Quartile = 1 AND CO.Year=2018 ORDER BY CR.CourseOfferId, CR.Grade DESC NULLS LAST), Stud AS (SELECT CR.CourseOfferId, StudentregistrationId, CR.Grade FROM CourseRegistrations CR, CourseOffers CO WHERE CO.CourseOfferId = CR.CourseOfferId AND CO.Quartile = 1 AND CO.Year=2018) SELECT StudentId, count(StudentId) as numberOfCoursesWhereExcellent FROM Stud S, BestGrades BG, StudentRegistrationsToDegrees SRTD WHERE BG.CourseOfferId = S.CourseOfferId AND BG.Grade = S.Grade AND S.StudentRegistrationId = SRTD.StudentRegistrationId GROUP BY StudentId HAVING count(StudentId) >= %1%;
 SELECT 0;
 SELECT 0;
